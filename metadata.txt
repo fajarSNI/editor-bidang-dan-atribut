@@ -1,0 +1,16 @@
+[general]
+name=Editor Bidang dan Atribut
+qgisMinimumVersion=3.0
+description=Toolkit digitasi kadastral untuk QGIS — alat geometri, atribut, kadastral, dan topologi dalam satu bundel.
+version=0.1
+author=Fajar SNI
+email=fajar0971@gmail.com
+about=Kumpulan alat (tools) yang dirancang untuk mendukung alur kerja digitasi kadastral di QGIS. Mencakup pengeditan geometri (explode, close polygon, pemecahan bidang), manajemen atribut (swap, copy, fill, suffix, batch rename), utilitas kadastral (hitung luas, validasi, ekspor ke Excel), dan pengecekan topologi dengan auto-fix. Mendukung layer PostGIS, Shapefile, dan GeoPackage.
+tracker=https://github.com/fajarSNI/editor-bidang-dan-atribut/issues
+repository=https://github.com/fajarSNI/editor-bidang-dan-atribut
+tags=vector, kadastral,digitasi,topologi,atribut,geometri,pemecahan,validasi
+homepage=https://github.com/fajarSNI/editor-bidang-dan-atribut
+category=Vector
+icon=icons/main.svg
+experimental=False
+deprecated=False
