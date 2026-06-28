@@ -9,13 +9,19 @@ class SwapAttributes:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Tukar Atribut (Swap)', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None,
+                'Tukar Atribut (Swap)',
+                'Tidak ada layer yang aktif!')
             return
 
         selected = layer.selectedFeatures()
         if len(selected) != 2:
-            QMessageBox.warning(None, 'Tukar Atribut (Swap)',
-                f'Pilih tepat 2 bidang.\nSaat ini terpilih: {len(selected)}')
+            QMessageBox.warning(
+                None,
+                'Tukar Atribut (Swap)',
+                f'Pilih tepat 2 bidang.\nSaat ini terpilih: {
+                    len(selected)}')
             return
 
         if not layer.isEditable():
@@ -43,5 +49,7 @@ class SwapAttributes:
             layer.changeAttributeValue(feat_a.id(), idx, attrs_b[name])
             layer.changeAttributeValue(feat_b.id(), idx, attrs_a[name])
 
-        QMessageBox.information(None, 'Tukar Atribut (Swap)',
+        QMessageBox.information(
+            None,
+            'Tukar Atribut (Swap)',
             'Atribut berhasil ditukar!\nJangan lupa Simpan (Ctrl+S).')

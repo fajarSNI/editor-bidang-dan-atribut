@@ -10,7 +10,10 @@ class AutoClosePolygon:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Tutup Poligon Otomatis', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None,
+                'Tutup Poligon Otomatis',
+                'Tidak ada layer yang aktif!')
             return
 
         if not layer.isEditable():
@@ -28,7 +31,10 @@ class AutoClosePolygon:
         features = selected if selected else list(layer.getFeatures())
 
         if not features:
-            QMessageBox.warning(None, 'Tutup Poligon Otomatis', 'Tidak ada bidang yang ditemukan!')
+            QMessageBox.warning(
+                None,
+                'Tutup Poligon Otomatis',
+                'Tidak ada bidang yang ditemukan!')
             return
 
         fixed_count = 0
@@ -43,8 +49,9 @@ class AutoClosePolygon:
                 layer.changeGeometry(feature.id(), valid_geom)
                 fixed_count += 1
 
-        scope = f'{len(selected)} bidang terpilih' if selected else 'semua bidang'
+        scope = f'{
+            len(selected)} bidang terpilih' if selected else 'semua bidang'
         QMessageBox.information(None, 'Tutup Poligon Otomatis',
-            f'Selesai! Memeriksa {scope}.\n'
-            f'Diperbaiki/ditutup: {fixed_count} poligon.\n'
-            f'Jangan lupa Simpan (Ctrl+S).')
+                                f'Selesai! Memeriksa {scope}.\n'
+                                f'Diperbaiki/ditutup: {fixed_count} poligon.\n'
+                                f'Jangan lupa Simpan (Ctrl+S).')

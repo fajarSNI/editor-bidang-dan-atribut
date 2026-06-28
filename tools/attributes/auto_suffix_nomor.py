@@ -66,12 +66,17 @@ class AutoSuffixNomor:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Penomoran Akhiran', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None,
+                'Penomoran Akhiran',
+                'Tidak ada layer yang aktif!')
             return
 
         selected = layer.selectedFeatures()
         if not selected:
-            QMessageBox.warning(None, 'Penomoran Akhiran',
+            QMessageBox.warning(
+                None,
+                'Penomoran Akhiran',
                 'Tidak ada bidang yang dipilih! Pilih bidang hasil pemecahan.')
             return
 
@@ -92,13 +97,19 @@ class AutoSuffixNomor:
 
         field_name, base_number = dialog.get_values()
         if not base_number:
-            QMessageBox.warning(None, 'Penomoran Akhiran', 'Nomor dasar tidak boleh kosong!')
+            QMessageBox.warning(
+                None,
+                'Penomoran Akhiran',
+                'Nomor dasar tidak boleh kosong!')
             return
 
         fields = layer.fields()
         idx = fields.indexOf(field_name)
         if idx < 0:
-            QMessageBox.warning(None, 'Penomoran Akhiran', f'Kolom "{field_name}" tidak ditemukan!')
+            QMessageBox.warning(
+                None,
+                'Penomoran Akhiran',
+                f'Kolom "{field_name}" tidak ditemukan!')
             return
 
         for i, feature in enumerate(selected):
@@ -106,7 +117,8 @@ class AutoSuffixNomor:
             new_value = f'{base_number}{suffix}'
             layer.changeAttributeValue(feature.id(), idx, new_value)
 
-        QMessageBox.information(None, 'Penomoran Akhiran',
-            f'Selesai! Menambahkan akhiran ke {len(selected)} bidang.\n'
-            f'Contoh: {base_number}A → {base_number}{generate_suffix(len(selected)-1)}\n'
-            f'Jangan lupa Simpan (Ctrl+S).')
+        QMessageBox.information(
+            None, 'Penomoran Akhiran', f'Selesai! Menambahkan akhiran ke {
+                len(selected)} bidang.\n' f'Contoh: {base_number}A → {base_number}{
+                generate_suffix(
+                    len(selected) - 1)}\n' f'Jangan lupa Simpan (Ctrl+S).')

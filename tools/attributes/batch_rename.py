@@ -28,7 +28,8 @@ class BatchRenameDialog(QDialog):
         self.replace_input = QLineEdit()
         layout.addWidget(self.replace_input)
 
-        self.selected_only_chk = QCheckBox('Terapkan hanya pada bidang terpilih')
+        self.selected_only_chk = QCheckBox(
+            'Terapkan hanya pada bidang terpilih')
         layout.addWidget(self.selected_only_chk)
 
         btn_row = QHBoxLayout()
@@ -57,7 +58,10 @@ class BatchRename:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Ubah Nama Massal', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None,
+                'Ubah Nama Massal',
+                'Tidak ada layer yang aktif!')
             return
 
         if not layer.isEditable():
@@ -77,24 +81,31 @@ class BatchRename:
 
         field_name, find_val, replace_val, selected_only = dialog.get_values()
         if not find_val:
-            QMessageBox.warning(None, 'Ubah Nama Massal', 'Nilai pencarian (Cari) tidak boleh kosong!')
+            QMessageBox.warning(
+                None,
+                'Ubah Nama Massal',
+                'Nilai pencarian (Cari) tidak boleh kosong!')
             return
 
         fields = layer.fields()
         idx = fields.indexOf(field_name)
         if idx < 0:
-            QMessageBox.warning(None, 'Ubah Nama Massal', f'Kolom "{field_name}" tidak ditemukan!')
+            QMessageBox.warning(
+                None,
+                'Ubah Nama Massal',
+                f'Kolom "{field_name}" tidak ditemukan!')
             return
 
         features = layer.selectedFeatures() if selected_only else layer.getFeatures()
         count = 0
         for feature in features:
-            current_val = str(feature[field_name]) if feature[field_name] else ''
+            current_val = str(
+                feature[field_name]) if feature[field_name] else ''
             if find_val in current_val:
                 new_val = current_val.replace(find_val, replace_val)
                 layer.changeAttributeValue(feature.id(), idx, new_val)
                 count += 1
 
         QMessageBox.information(None, 'Ubah Nama Massal',
-            f'Selesai! Mengganti "{find_val}" → "{replace_val}" pada {count} bidang.\n'
-            f'Jangan lupa Simpan (Ctrl+S).')
+                                f'Selesai! Mengganti "{find_val}" → "{replace_val}" pada {count} bidang.\n'
+                                f'Jangan lupa Simpan (Ctrl+S).')

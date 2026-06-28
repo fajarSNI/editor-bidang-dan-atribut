@@ -42,7 +42,7 @@ class CadTools:
         # Submenus
         menu_geom = self.menu.addMenu('Geometri')
         menu_attr = self.menu.addMenu('Atribut')
-        menu_cad  = self.menu.addMenu('Kadastral')
+        menu_cad = self.menu.addMenu('Kadastral')
         menu_topo = self.menu.addMenu('Topologi')
 
         # ── GEOMETRI ──────────────────────────────────────────────────────
@@ -68,8 +68,7 @@ class CadTools:
             icon='pemecahan.svg',
             tooltip='Membagi/memecah bidang tanah dengan rasio dan arah tertentu',
             menu=menu_geom,
-            toolbar=True
-        )
+            toolbar=True)
 
         # ── ATRIBUT ────────────────────────────────────────────────────
         self._add_tool(
@@ -86,8 +85,7 @@ class CadTools:
             icon='copy_attr.png',
             tooltip='Menyalin atribut dari 1 bidang sumber ke semua bidang yang dipilih',
             menu=menu_attr,
-            toolbar=True
-        )
+            toolbar=True)
         self._add_tool(
             tool_class=QuickFieldFill,
             label='Isi Kolom Cepat',
@@ -110,8 +108,7 @@ class CadTools:
             icon='suffix.svg',
             tooltip='Memberikan huruf akhiran otomatis ke nomor bidang hasil pecahan (001 → 001A, 001B)',
             menu=menu_attr,
-            toolbar=True
-        )
+            toolbar=True)
         self._add_tool(
             tool_class=CopyCoordinates,
             label='Salin Koordinat Geometri',
@@ -136,16 +133,14 @@ class CadTools:
             icon='validasi.svg',
             tooltip='Memeriksa kolom wajib dan menyorot bidang yang kosong (NULL)',
             menu=menu_cad,
-            toolbar=True
-        )
+            toolbar=True)
         self._add_tool(
             tool_class=ExportExcel,
             label='Ekspor Pilihan ke Excel',
             icon='export_excel.png',
             tooltip='Mengekspor atribut dari bidang yang dipilih ke file Excel (.xlsx)',
             menu=menu_cad,
-            toolbar=False
-        )
+            toolbar=False)
 
         # ── TOPOLOGI ──────────────────────────────────────────────────────
         self._add_tool(
@@ -154,8 +149,7 @@ class CadTools:
             icon='topology.svg',
             tooltip='Memeriksa dan memperbaiki kesalahan topologi (tumpang tindih, celah, potong silang)',
             menu=menu_topo,
-            toolbar=True
-        )
+            toolbar=True)
 
     def _add_tool(self, tool_class, label, icon, tooltip, menu, toolbar=False):
         tool_instance = tool_class(self.iface)

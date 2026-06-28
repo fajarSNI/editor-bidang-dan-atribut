@@ -34,7 +34,8 @@ class HitungLuasDialog(QDialog):
         self.round_spin.setValue(2)
         layout.addWidget(self.round_spin)
 
-        self.selected_only_chk = QCheckBox('Terapkan hanya pada bidang terpilih')
+        self.selected_only_chk = QCheckBox(
+            'Terapkan hanya pada bidang terpilih')
         self.selected_only_chk.setChecked(True)
         layout.addWidget(self.selected_only_chk)
 
@@ -63,7 +64,8 @@ class HitungLuas:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Hitung Luas', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None, 'Hitung Luas', 'Tidak ada layer yang aktif!')
             return
 
         if not layer.isEditable():
@@ -84,7 +86,10 @@ class HitungLuas:
         field_name, decimals, selected_only = dialog.get_values()
         idx = layer.fields().indexOf(field_name)
         if idx < 0:
-            QMessageBox.warning(None, 'Hitung Luas', f'Kolom "{field_name}" tidak ditemukan!')
+            QMessageBox.warning(
+                None,
+                'Hitung Luas',
+                f'Kolom "{field_name}" tidak ditemukan!')
             return
 
         # Use QGIS distance area for accurate calculation
@@ -103,5 +108,5 @@ class HitungLuas:
                 count += 1
 
         QMessageBox.information(None, 'Hitung Luas',
-            f'Selesai! Memperbarui "{field_name}" pada {count} bidang.\n'
-            f'Jangan lupa Simpan (Ctrl+S).')
+                                f'Selesai! Memperbarui "{field_name}" pada {count} bidang.\n'
+                                f'Jangan lupa Simpan (Ctrl+S).')

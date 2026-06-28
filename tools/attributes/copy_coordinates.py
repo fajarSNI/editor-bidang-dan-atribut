@@ -11,12 +11,17 @@ class CopyCoordinates:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Salin Koordinat', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None,
+                'Salin Koordinat',
+                'Tidak ada layer yang aktif!')
             return
 
         selected = layer.selectedFeatures()
         if not selected:
-            QMessageBox.warning(None, 'Salin Koordinat',
+            QMessageBox.warning(
+                None,
+                'Salin Koordinat',
                 'Tidak ada bidang yang dipilih! Pilih bidang terlebih dahulu.')
             return
 
@@ -31,10 +36,14 @@ class CopyCoordinates:
                     if val:
                         label = f'{candidate}: {val}'
                         break
-            lines.append(f'{label}\tX: {centroid.x():.6f}\tY: {centroid.y():.6f}')
+            lines.append(
+                f'{label}\tX: {
+                    centroid.x():.6f}\tY: {
+                    centroid.y():.6f}')
 
         text = '\n'.join(lines)
         QApplication.clipboard().setText(text)
 
-        QMessageBox.information(None, 'Salin Koordinat',
-            f'Menyalin koordinat dari {len(selected)} bidang ke clipboard.\n\n{text}')
+        QMessageBox.information(
+            None, 'Salin Koordinat', f'Menyalin koordinat dari {
+                len(selected)} bidang ke clipboard.\n\n{text}')

@@ -18,11 +18,11 @@ class ValidasiDialog(QDialog):
 
     def _build_ui(self):
         layout = QVBoxLayout(self)
-        layout.addWidget(QLabel(
-            'Pilih kolom wajib yang ingin diperiksa.\n'
-            'Bidang dengan nilai kosong (NULL) pada kolom wajib akan disorot MERAH.\n'
-            'Bidang yang semua kolom wajibnya terisi akan disorot HIJAU.'
-        ))
+        layout.addWidget(
+            QLabel(
+                'Pilih kolom wajib yang ingin diperiksa.\n'
+                'Bidang dengan nilai kosong (NULL) pada kolom wajib akan disorot MERAH.\n'
+                'Bidang yang semua kolom wajibnya terisi akan disorot HIJAU.'))
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
@@ -58,7 +58,10 @@ class ValidasiHighlight:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Validasi Bidang', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None,
+                'Validasi Bidang',
+                'Tidak ada layer yang aktif!')
             return
 
         dialog = ValidasiDialog(layer.fields())
@@ -67,11 +70,14 @@ class ValidasiHighlight:
 
         mandatory_fields = dialog.get_selected_fields()
         if not mandatory_fields:
-            QMessageBox.warning(None, 'Validasi Bidang',
+            QMessageBox.warning(
+                None,
+                'Validasi Bidang',
                 'Tidak ada kolom yang dipilih! Centang minimal satu kolom.')
             return
 
-        # Build null expression: feature is invalid if ANY mandatory field is NULL or empty
+        # Build null expression: feature is invalid if ANY mandatory field is
+        # NULL or empty
         null_conditions = []
         for field in mandatory_fields:
             null_conditions.append(f'"{field}" IS NULL OR "{field}" = \'\'')
@@ -112,15 +118,15 @@ class ValidasiHighlight:
 
         # Count stats
         null_count = sum(
-            1 for f in layer.getFeatures()
-            if any(f[field] is None or str(f[field]).strip() == '' for field in mandatory_fields)
-        )
+            1 for f in layer.getFeatures() if any(
+                f[field] is None or str(
+                    f[field]).strip() == '' for field in mandatory_fields))
         total = layer.featureCount()
         complete = total - null_count
 
         QMessageBox.information(None, 'Validasi Bidang',
-            f'Validasi selesai!\n\n'
-            f'Total bidang    : {total}\n'
-            f'Lengkap (hijau) : {complete}\n'
-            f'Kosong (merah)  : {null_count}\n\n'
-            f'Kolom dicek: {", ".join(mandatory_fields)}')
+                                f'Validasi selesai!\n\n'
+                                f'Total bidang    : {total}\n'
+                                f'Lengkap (hijau) : {complete}\n'
+                                f'Kosong (merah)  : {null_count}\n\n'
+                                f'Kolom dicek: {", ".join(mandatory_fields)}')

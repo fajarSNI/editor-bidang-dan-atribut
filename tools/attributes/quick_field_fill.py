@@ -65,12 +65,17 @@ class QuickFieldFill:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Isi Kolom Cepat', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None,
+                'Isi Kolom Cepat',
+                'Tidak ada layer yang aktif!')
             return
 
         selected = layer.selectedFeatures()
         if not selected:
-            QMessageBox.warning(None, 'Isi Kolom Cepat',
+            QMessageBox.warning(
+                None,
+                'Isi Kolom Cepat',
                 'Tidak ada bidang yang dipilih! Pilih bidang yang ingin Anda perbarui.')
             return
 
@@ -91,7 +96,10 @@ class QuickFieldFill:
 
         values = dialog.get_values()
         if not values:
-            QMessageBox.information(None, 'Isi Kolom Cepat', 'Tidak ada kolom yang diisi, tidak ada yang diperbarui.')
+            QMessageBox.information(
+                None,
+                'Isi Kolom Cepat',
+                'Tidak ada kolom yang diisi, tidak ada yang diperbarui.')
             return
 
         fields = layer.fields()
@@ -101,6 +109,7 @@ class QuickFieldFill:
                 if idx >= 0:
                     layer.changeAttributeValue(feature.id(), idx, value)
 
-        QMessageBox.information(None, 'Isi Kolom Cepat',
-            f'Selesai! Memperbarui {len(values)} kolom untuk {len(selected)} bidang.\n'
-            f'Jangan lupa Simpan (Ctrl+S).')
+        QMessageBox.information(
+            None, 'Isi Kolom Cepat', f'Selesai! Memperbarui {
+                len(values)} kolom untuk {
+                len(selected)} bidang.\n' f'Jangan lupa Simpan (Ctrl+S).')

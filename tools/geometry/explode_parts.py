@@ -10,7 +10,10 @@ class ExplodeParts:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Pecah Multipart (Explode)', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None,
+                'Pecah Multipart (Explode)',
+                'Tidak ada layer yang aktif!')
             return
 
         if not layer.isEditable():
@@ -26,13 +29,18 @@ class ExplodeParts:
 
         selected = layer.selectedFeatures()
         if not selected:
-            QMessageBox.warning(None, 'Pecah Multipart (Explode)',
+            QMessageBox.warning(
+                None,
+                'Pecah Multipart (Explode)',
                 'Tidak ada bidang yang dipilih!\nPilih bidang multipart yang ingin Anda pecah.')
             return
 
-        multipart_features = [f for f in selected if f.geometry().isMultipart()]
+        multipart_features = [
+            f for f in selected if f.geometry().isMultipart()]
         if not multipart_features:
-            QMessageBox.information(None, 'Pecah Multipart (Explode)',
+            QMessageBox.information(
+                None,
+                'Pecah Multipart (Explode)',
                 'Semua bidang yang dipilih sudah singlepart (tidak tergabung).')
             return
 
@@ -53,5 +61,5 @@ class ExplodeParts:
             exploded_count += 1
 
         QMessageBox.information(None, 'Pecah Multipart (Explode)',
-            f'Selesai!\n\nBidang diproses : {exploded_count}\n'
-            f'Bidang baru ditambahkan : {total_new}\n\nJangan lupa Simpan (Ctrl+S).')
+                                f'Selesai!\n\nBidang diproses : {exploded_count}\n'
+                                f'Bidang baru ditambahkan : {total_new}\n\nJangan lupa Simpan (Ctrl+S).')

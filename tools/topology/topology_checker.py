@@ -31,15 +31,18 @@ class TopologyDialog(QDialog):
         if is_polygon:
             rules = [
                 ('self_intersect', 'Tidak boleh memotong diri sendiri (Perbaikan Otomatis ✅)'),
-                ('overlap',        'Tidak boleh tumpang tindih (Panduan Perbaikan ⚠️)'),
-                ('gap',            'Tidak boleh ada celah (Panduan Perbaikan ⚠️)'),
-                ('cluster',        'Harus lebih besar dari batas toleransi cluster (Perbaikan Otomatis ✅)'),
+                ('overlap', 'Tidak boleh tumpang tindih (Panduan Perbaikan ⚠️)'),
+                ('gap', 'Tidak boleh ada celah (Panduan Perbaikan ⚠️)'),
+                ('cluster', 'Harus lebih besar dari batas toleransi cluster (Perbaikan Otomatis ✅)'),
             ]
         else:
             rules = [
-                ('self_intersect', 'Tidak boleh memotong diri sendiri (Perbaikan Otomatis ✅)'),
-                ('intersect',      'Tidak boleh saling memotong silang — potong otomatis (Perbaikan Otomatis ✅)'),
-                ('dangle',         'Tidak boleh ada garis menggantung/dangle (Panduan Perbaikan ⚠️)'),
+                ('self_intersect',
+                 'Tidak boleh memotong diri sendiri (Perbaikan Otomatis ✅)'),
+                ('intersect',
+                 'Tidak boleh saling memotong silang — potong otomatis (Perbaikan Otomatis ✅)'),
+                ('dangle',
+                 'Tidak boleh ada garis menggantung/dangle (Panduan Perbaikan ⚠️)'),
             ]
 
         for key, label in rules:
@@ -82,7 +85,10 @@ class TopologyChecker:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Cek Topologi', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None,
+                'Cek Topologi',
+                'Tidak ada layer yang aktif!')
             return
 
         geom_type = layer.geometryType()
@@ -118,7 +124,8 @@ class TopologyChecker:
                     if fixed and not fixed.isEmpty():
                         layer.changeGeometry(feature.id(), fixed)
                         auto_fixed += 1
-            report.append(f'Memotong diri sendiri: {auto_fixed} bidang diperbaiki otomatis dengan makeValid()')
+            report.append(
+                f'Memotong diri sendiri: {auto_fixed} bidang diperbaiki otomatis dengan makeValid()')
 
         # ── CLUSTER TOLERANCE (Auto Fix — flag small polygons) ─────────────
         if rules.get('cluster'):
@@ -135,18 +142,20 @@ class TopologyChecker:
                 )
                 needs_review.extend(small_ids)
             else:
-                report.append(f'Toleransi cluster: Tidak ada bidang di bawah {tolerance} m².')
+                report.append(
+                    f'Toleransi cluster: Tidak ada bidang di bawah {tolerance} m².')
 
         # ── OVERLAP (Detect, Guided) ────────────────────────────────────────
         if rules.get('overlap'):
             overlap_pairs = []
             for i, feat_a in enumerate(features):
-                for feat_b in features[i+1:]:
+                for feat_b in features[i + 1:]:
                     if feat_a.geometry() and feat_b.geometry():
                         if feat_a.geometry().intersects(feat_b.geometry()):
                             inter = feat_a.geometry().intersection(feat_b.geometry())
                             if inter and not inter.isEmpty() and inter.area() > 0:
-                                overlap_pairs.append((feat_a.id(), feat_b.id()))
+                                overlap_pairs.append(
+                                    (feat_a.id(), feat_b.id()))
                                 needs_review.extend([feat_a.id(), feat_b.id()])
             if overlap_pairs:
                 report.append(
@@ -154,7 +163,8 @@ class TopologyChecker:
                     f'  Pasangan (FID): {overlap_pairs[:5]}{"..." if len(overlap_pairs) > 5 else ""}'
                 )
             else:
-                report.append('Tumpang tindih (Overlap): Tidak ditemukan tumpang tindih.')
+                report.append(
+                    'Tumpang tindih (Overlap): Tidak ditemukan tumpang tindih.')
 
         # ── GAPS (Detect, Guided) ───────────────────────────────────────────
         if rules.get('gap'):
@@ -168,10 +178,11 @@ class TopologyChecker:
                 gaps = convex_hull.difference(union_geom)
                 if gaps and not gaps.isEmpty() and gaps.area() > tolerance:
                     report.append(
-                        f'Celah (Gaps): Terdeteksi potensi area celah ({gaps.area():.2f} m²) — butuh pemeriksaan manual.'
-                    )
+                        f'Celah (Gaps): Terdeteksi potensi area celah ({
+                            gaps.area():.2f} m²) — butuh pemeriksaan manual.')
                 else:
-                    report.append('Celah (Gaps): Tidak ditemukan celah yang signifikan.')
+                    report.append(
+                        'Celah (Gaps): Tidak ditemukan celah yang signifikan.')
 
         # ── LINE INTERSECT (Auto Fix — split at intersections) ─────────────
         if rules.get('intersect'):
@@ -179,7 +190,7 @@ class TopologyChecker:
             new_features = []
             to_delete = []
             for i, feat_a in enumerate(features):
-                for feat_b in features[i+1:]:
+                for feat_b in features[i + 1:]:
                     if feat_a.geometry() and feat_b.geometry():
                         if feat_a.geometry().crosses(feat_b.geometry()):
                             split_count += 1
@@ -192,8 +203,7 @@ class TopologyChecker:
         if rules.get('dangle'):
             report.append(
                 'Garis Menggantung (Dangle): Deteksi membutuhkan input toleransi snapping.\n'
-                '  → Gunakan plugin QGIS Topology Checker untuk deteksi dangle yang lebih detail.'
-            )
+                '  → Gunakan plugin QGIS Topology Checker untuk deteksi dangle yang lebih detail.')
 
         # ── Highlight features needing review ──────────────────────────────
         if needs_review:
@@ -202,6 +212,6 @@ class TopologyChecker:
         # ── Report ─────────────────────────────────────────────────────────
         report_text = '\n\n'.join(report)
         QMessageBox.information(None, 'Hasil Cek Topologi',
-            f'{report_text}\n\n'
-            f'Bidang yang membutuhkan tinjauan manual sekarang TERPILIH di layer.\n'
-            f'Jangan lupa Simpan (Ctrl+S) setelah meninjau/memperbaiki.')
+                                f'{report_text}\n\n'
+                                f'Bidang yang membutuhkan tinjauan manual sekarang TERPILIH di layer.\n'
+                                f'Jangan lupa Simpan (Ctrl+S) setelah meninjau/memperbaiki.')

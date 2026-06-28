@@ -9,14 +9,17 @@ class CopyAttributes:
         layer = self.iface.activeLayer()
 
         if not layer:
-            QMessageBox.warning(None, 'Salin Atribut ke Pilihan', 'Tidak ada layer yang aktif!')
+            QMessageBox.warning(
+                None,
+                'Salin Atribut ke Pilihan',
+                'Tidak ada layer yang aktif!')
             return
 
         selected = layer.selectedFeatures()
         if len(selected) < 2:
             QMessageBox.warning(None, 'Salin Atribut ke Pilihan',
-                'Pilih minimal 2 bidang.\n'
-                '(1 sumber + 1 atau lebih target)')
+                                'Pilih minimal 2 bidang.\n'
+                                '(1 sumber + 1 atau lebih target)')
             return
 
         if not layer.isEditable():
@@ -35,7 +38,8 @@ class CopyAttributes:
         for f in selected:
             # Build a short label from common identifier fields
             for candidate in ['NOMOR', 'NOP', 'Id', 'id', 'FID']:
-                val = f[candidate] if candidate in [fld.name() for fld in layer.fields()] else None
+                val = f[candidate] if candidate in [
+                    fld.name() for fld in layer.fields()] else None
                 if val is not None:
                     options.append(f'FID {f.id()} — {candidate}: {val}')
                     break
@@ -55,13 +59,15 @@ class CopyAttributes:
         target_feats = [f for i, f in enumerate(selected) if i != source_index]
 
         fields = layer.fields()
-        source_attrs = {field.name(): source_feat[field.name()] for field in fields}
+        source_attrs = {
+            field.name(): source_feat[field.name()] for field in fields}
 
         for target in target_feats:
             for field in fields:
                 idx = layer.fields().indexOf(field.name())
-                layer.changeAttributeValue(target.id(), idx, source_attrs[field.name()])
+                layer.changeAttributeValue(
+                    target.id(), idx, source_attrs[field.name()])
 
-        QMessageBox.information(None, 'Salin Atribut ke Pilihan',
-            f'Selesai! Atribut disalin ke {len(target_feats)} bidang.\n'
-            f'Jangan lupa Simpan (Ctrl+S).')
+        QMessageBox.information(
+            None, 'Salin Atribut ke Pilihan', f'Selesai! Atribut disalin ke {
+                len(target_feats)} bidang.\n' f'Jangan lupa Simpan (Ctrl+S).')
